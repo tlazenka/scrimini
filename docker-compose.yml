@@ -1,0 +1,20 @@
+version: '2'
+services:
+  app:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    volumes_from:
+     - sbt
+    working_dir: /app
+    command: sbt test
+
+  sbt:
+    image: centos:7
+    volumes:
+     - ~/.ivy2:/root/.ivy2:rw
+     - ~/.ivy2:/home/docker/.ivy2:rw
+     - ~/.sbt:/root/.sbt:rw
+     - ~/.sbt:/home/docker/.sbt:rw
