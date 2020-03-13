@@ -4,11 +4,11 @@ Implementation of a tiny interpreter in Scala Native, inspired by [An interprete
 
 ## Test
 
-`docker-compose -f docker-compose.yml -f docker-compose.jvm.yml run --rm app sbt test`
+`docker-compose run --rm app sbt test`
 
 ## Run
 
-`docker-compose run --rm app sbt "app ./app/src/main/resources/example.scr"`
+`docker-compose -f docker-compose.yml -f docker-compose.native.yml run --rm app sbt "app ./app/src/main/resources/example.scr"`
 
 # Acknowledgements
 

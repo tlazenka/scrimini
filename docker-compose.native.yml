@@ -2,4 +2,4 @@ version: '2'
 services:
   app:
       volumes:
-        - ./build.jvm.sbt:/app/build.sbt
+        - ./build.native.sbt:/app/build.sbt
