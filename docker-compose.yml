@@ -11,6 +11,15 @@ services:
     working_dir: /app
     command: sbt test
 
+  format:
+    image: wellcome/scalafmt:153
+    volumes:
+      - .:/app
+    volumes_from:
+      - sbt
+    working_dir: /app
+    command: /usr/local/bin/scalafmt .
+
   sbt:
     image: centos:7
     volumes:

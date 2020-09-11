@@ -31,9 +31,9 @@ class InterpreterTest extends FunSuite {
                             |    (set j (+ j 1)))
                             |  (set i (+ i 1)))""".stripMargin
 
-
     val tokenized = tokenize(example)
 
+    // format: off
     val expectedTokens = List(TOpen(), TSymbol("set"), TSymbol("i"), TInt(0), TClose(),
       TOpen(), TSymbol("while"), TOpen(), TSymbol("<="), TSymbol("i"), TInt(3), TClose(),
         TOpen(), TSymbol("write"), TSymbol("i"), TClose(),
@@ -43,10 +43,12 @@ class InterpreterTest extends FunSuite {
           TOpen(), TSymbol("write"), TSymbol("j"), TClose(),
           TOpen(), TSymbol("set"), TSymbol("j"), TOpen(), TSymbol("+"), TSymbol("j"), TInt(1), TClose(), TClose(), TClose(),
         TOpen(), TSymbol("set"), TSymbol("i"), TOpen(), TSymbol("+"), TSymbol("i"), TInt(1), TClose(), TClose(), TClose())
+    // format: on
     assert(tokenized == expectedTokens)
 
     val nested = nest(tokenized)
 
+    // format: off
     val expectedNest = NList(List(NSymbol("seq"),
       NList(List(NSymbol("set"), NSymbol("i"), NInt(0))),
       NList(List(NSymbol("while"),
@@ -58,15 +60,18 @@ class InterpreterTest extends FunSuite {
           NList(List(NSymbol("write"), NSymbol("j"))),
           NList(List(NSymbol("set"), NSymbol("j"), NList(List(NSymbol("+"), NSymbol("j"), NInt(1))))))),
         NList(List(NSymbol("set"), NSymbol("i"), NList(List(NSymbol("+"), NSymbol("i"), NInt(1)))))))))
+    // format: on
 
     assert(nested == expectedNest)
 
+    // format: off
     val expectedParse = ESeq(ESet("i", EInt(0)),
       EWhile(EBinOp(Lte(), EGet("i"), EInt(3)),
         ESeq(EWriteInt(EGet("i")), ESeq(ESet("j", EInt(500)),
           ESeq(EWhile(EBinOp(Lte(), EGet("j"), EInt(503)),
             ESeq(EWriteInt(EGet("j")),
               ESet("j", EBinOp(Add(), EGet("j"), EInt(1))))), ESet("i", EBinOp(Add(), EGet("i"), EInt(1))))))))
+    // format: on
 
     val parsed = parse(nested)
 

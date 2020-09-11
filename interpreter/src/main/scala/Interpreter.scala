@@ -5,7 +5,6 @@ object Interpreter {
   case class TSymbol(string: String) extends Token
   case class TInt(value: Int) extends Token
 
-
   def isSymbolCharacter(c: Char): Boolean = {
     c.isLetterOrDigit || List('+', '-', '*', '/', '!', '=', '<', '>', '_', '%').contains(c)
   }
@@ -17,16 +16,17 @@ object Interpreter {
       case List() => List()
       case '(' :: cs => TOpen() +: tokenize(cs)
       case ')' :: cs => TClose() +: tokenize(cs)
-      case c :: cs => c match {
-        case digit if digit.isDigit =>
-          val (remainingDigits, rest) = cs.span(i => i.isDigit)
-          TInt(value = (digit +: remainingDigits).mkString.toInt) +: tokenize(rest)
-        case symbolCharacter if isSymbolCharacter(symbolCharacter) =>
-          val (remainingSymbolCharacters, rest) = cs.span(i => isSymbolCharacter(i))
-          TSymbol(string = (symbolCharacter +: remainingSymbolCharacters).mkString) +: tokenize(rest)
-        case whitespace if whitespace.isWhitespace =>
-          tokenize(cs)
-      }
+      case c :: cs =>
+        c match {
+          case digit if digit.isDigit =>
+            val (remainingDigits, rest) = cs.span(i => i.isDigit)
+            TInt(value = (digit +: remainingDigits).mkString.toInt) +: tokenize(rest)
+          case symbolCharacter if isSymbolCharacter(symbolCharacter) =>
+            val (remainingSymbolCharacters, rest) = cs.span(i => isSymbolCharacter(i))
+            TSymbol(string = (symbolCharacter +: remainingSymbolCharacters).mkString) +: tokenize(rest)
+          case whitespace if whitespace.isWhitespace =>
+            tokenize(cs)
+        }
 
     }
   }
@@ -40,17 +40,18 @@ object Interpreter {
     tokens match {
       case List() =>
         (NList(ns), List())
-      case t :: ts => t match {
-        case TOpen() =>
-          val (n, tsp) = nestOne(ts, List())
-          nestOne(tsp, ns :+ n)
-        case TSymbol(s) =>
-          nestOne(ts, ns :+ NSymbol(s))
-        case TInt(i) =>
-          nestOne(ts, ns :+ NInt(i))
-        case TClose() =>
-          (NList(ns), ts)
-      }
+      case t :: ts =>
+        t match {
+          case TOpen() =>
+            val (n, tsp) = nestOne(ts, List())
+            nestOne(tsp, ns :+ n)
+          case TSymbol(s) =>
+            nestOne(ts, ns :+ NSymbol(s))
+          case TInt(i) =>
+            nestOne(ts, ns :+ NInt(i))
+          case TClose() =>
+            (NList(ns), ts)
+        }
     }
   }
 
@@ -156,8 +157,7 @@ object Interpreter {
         val (v, varsp) = eval(vars, e)
         if (v == 0) {
           (1, varsp)
-        }
-        else {
+        } else {
           (0, varsp)
         }
       case EGet(variable) =>
@@ -172,16 +172,14 @@ object Interpreter {
         val (cond, varsp) = eval(vars, c)
         if (cond == 0) {
           eval(varsp, e)
-        }
-        else {
+        } else {
           eval(varsp, t)
         }
       case EWhile(c, e) =>
         val (cond, varsp) = eval(vars, c)
         if (cond == 0) {
           (0, varsp)
-        }
-        else {
+        } else {
           val (_, varspp) = eval(varsp, e)
           eval(varspp, EWhile(c, e))
         }
