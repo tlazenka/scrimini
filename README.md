@@ -12,4 +12,4 @@ Implementation of a tiny interpreter in Scala Native, inspired by [An interprete
 
 # Acknowledgements
 
-James Harrison Fisher and others listed in [LICENSE-THIRD-PARTY](LICENSE-THIRD-PARTY).
+James Harrison Fisher and others listed in the [LICENSE](LICENSE).
