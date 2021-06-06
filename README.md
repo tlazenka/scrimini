@@ -1,6 +1,6 @@
 # scrimini
 
-Implementation of a tiny interpreter in Scala Native, inspired by [An interpreter in Haskell](https://jameshfisher.com/2018/03/06/an-interpreter-in-haskell/).
+Implementation of a tiny interpreter in Scala 3, inspired by [An interpreter in Haskell](https://jameshfisher.com/2018/03/06/an-interpreter-in-haskell/).
 
 ## Test
 
@@ -8,7 +8,7 @@ Implementation of a tiny interpreter in Scala Native, inspired by [An interprete
 
 ## Run
 
-`docker-compose -f docker-compose.yml -f docker-compose.native.yml run --rm app sbt "app ./app/src/main/resources/example.scr"`
+`docker-compose run --rm app sbt "app ./app/src/main/resources/example.scr"`
 
 # Acknowledgements
 

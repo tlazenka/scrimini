@@ -1,8 +1,9 @@
-FROM mozilla/sbt:8u212_1.2.8
+FROM adoptopenjdk:11.0.11_9-jdk-hotspot
 
-RUN apt-get update
-RUN apt install clang libunwind-dev -y
-RUN apt install libgc-dev libre2-dev -y
+RUN curl -fLo cs https://git.io/coursier-cli-"$(uname | tr LD ld)"
+RUN chmod +x cs
+RUN ./cs setup --yes --install-dir /usr/local/bin/
+RUN rm ./cs
 
 ENV APP_HOME /app
 WORKDIR $APP_HOME
