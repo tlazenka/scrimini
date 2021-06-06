@@ -12,13 +12,15 @@ services:
     command: sbt test
 
   format:
-    image: wellcome/scalafmt:153
+    build:
+        context: .
+        dockerfile: Dockerfile
     volumes:
       - .:/app
     volumes_from:
       - sbt
     working_dir: /app
-    command: /usr/local/bin/scalafmt .
+    command: scalafmt .
 
   sbt:
     image: centos:7

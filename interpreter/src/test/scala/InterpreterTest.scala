@@ -1,7 +1,7 @@
 import Interpreter._
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class InterpreterTest extends FunSuite {
+class InterpreterTest extends AnyFunSuite {
   test("Interpreter.eval") {
     val result0 = evalToGlobals("(set i 0) (set i (+ i 2))")
     assert(result0.size == 1)
